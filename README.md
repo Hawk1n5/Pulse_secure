@@ -5,7 +5,6 @@
 ```
 #!/usr/bin/env ruby
 require './robot.rb'
-require 'net/http'
 
 ps = PulseSecure.new("10.254.254.34", 443)
 ps.setLoginPage("/dana-na/auth/url_admin/login.cgi")
