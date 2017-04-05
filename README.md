@@ -1,7 +1,5 @@
 # Pulse_secure
 
-## Introduction
-
 針對自動化加入Realms,Roles,profile的api
 
 ```
