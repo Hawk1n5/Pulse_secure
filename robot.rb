@@ -21,8 +21,9 @@ class PulseSecure
 	def setLoginPage(page)
 		@loginPage = page
 	end
-	def login(data)
-		page = @http.post(@loginPage, data, @header)
+	def login(user, passwd)
+		post_data = "tz_offset=480&username=#{user}&password=#{passwd}&realm=Admin+Users&btnSubmit=Sign+In"
+		page = @http.post(@loginPage, post_data, @header)
 	
 		location = page.response['location'].match(/https:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(.*)/).captures()[0]
 		if page.response['set-cookie']
@@ -126,7 +127,7 @@ class PulseSecure
 		page = @http.post(page, post_data, @header)	
 		@header["Referer"] = ""
 	end
-	def bookmark(profile_name)
+	def bookmark(profile_name, mutiplemonitor=false)
 		page = "/dana-admin/objects/resource_objects.cgi?object_type=term"
 		@header["Referer"] = "https://10.254.254.34/dana-admin/misc/dashboard.cgi"
 		objects_page = @http.post(page, '',@header)		
@@ -149,7 +150,8 @@ class PulseSecure
 		bm_id           = bookmark_page.body.match(/type="hidden" name="bm_id" value="(.*)">/).captures()[0]
 		policy_version  = bookmark_page.body.match(/type="hidden" name="policy_version" value="(.*)">/).captures()[0]
 	
-		post_data = "xsauth=#{xsauth}&optType=#{optType}&txtServer=#{txtServer}&txtServerPort=#{txtServerPort}&chkJava=ON&chkJavaFallBack=javaFall&applet_id=#{applet_id}&txtName=#{txtName}&txtDescription=&cmbScreenSize=Full+Screen&colorDepth=32&txtUsername=&optPassType=Variable&txtPasswordVariable=&txtPassword=&txtStartApp=&txtStartDir=&chkConnectDrives=ON&chkAllowClipboard=ON&chkMultiMon=ON&soundOptions=local&selectedRoles=%2C&policy_version=#{policy_version}&object_type=term&subtype=0&object_id=#{object_id}&create=&optRoles=all&object_type=term&subtype=0&object_id=#{object_id}&bm_id=#{bm_id}&btnSave=Save+Changes"
+		post_data = "xsauth=#{xsauth}&optType=#{optType}&txtServer=#{txtServer}&txtServerPort=#{txtServerPort}&chkJava=ON&chkJavaFallBack=javaFall&applet_id=#{applet_id}&txtName=#{txtName}&txtDescription=&cmbScreenSize=Full+Screen&colorDepth=24&txtUsername=&optPassType=Variable&txtPasswordVariable=&txtPassword=&txtStartApp=&txtStartDir=&chkConnectDrives=ON&chkAllowClipboard=ON&soundOptions=local&selectedRoles=%2C&policy_version=#{policy_version}&object_type=term&subtype=0&object_id=#{object_id}&create=&optRoles=all&object_type=term&subtype=0&object_id=#{object_id}&bm_id=#{bm_id}&btnSave=Save+Changes"
+		post_data << "&chkMultiMon=ON" if mutiplemonitor
 		@header["Referer"] = "https://10.254.254.34/dana-admin/objects/edit_object_bm.cgi?object_type=term&subtype=&object_id=#{object_id}&bm_id=#{bm_id}"
 		
 		@http.post(page, post_data, @header)
