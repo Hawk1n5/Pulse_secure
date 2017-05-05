@@ -25,7 +25,7 @@ ps.profile("demo RDP", "demo", "127.0.0.1", "demo_profile")
 ps.roleMap("demo", "demo_profile")
 
 # bookmark(name, mutli_monitor) # mutli_monitor 是否給予多螢幕
-ps.bookmark("demo RDP")
+ps.bookmark("demo RDP", false)
 
 # Logout
 ps.logout()
